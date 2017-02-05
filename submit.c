@@ -48,9 +48,31 @@ void gennbody(double** s, double** v, double* m, int n) {
   
 	printf("Generate nBody initial condition here.\n");
 	//implement gen solar system
+	//	if (n == 0){
+	//int earth = 4;
+	//double earthspeed = 29800;
+	//
+	//double mass[] = {1.99*pow(10,30), 3.30*pow(10,23), 4.87*pow(10,24), 5.97*pow(10,24), 6.42*pow(10,23), 1.90*pow(10,27), 5.69*pow(10,26), 1.02*pow(10,26), 8.68*pow(10,25), 1.31*pow(10,22)}
+	//double dist[] = {0, 5.8*pow(10,10), 1.08*pow(10,11), 1.50*pow(10,11), 2.28*pow(10,11), 7.78*pow(10,11), 1.43*pow(10,12), 2.87*pow(10,12), 4.50*pow(10,12), 5.91*pow(10,12)};
+	//
+	//double theta[10];
+	//int i;
+	//for(i=0; i < 10, i++){
+	//  theta[i] = 2 * 3.14159 * rand()%2;
+	//  s[i][0] = dist[i]*cos(theta[i]);
+	//  s[i][1] = dist[i]*sin(theta[i]);
+	//  s[i][2] = 0;
+	//}
+	//
+	//double speed[];
+	//int j;
+	//for(j=0; j < 10; j++){
+	//  speed[j] = earthspeed*pow((dist[earth-1] / dist[j]), 0.5);
+	//}
+	//speed[0] = 0;          	  
+	// }
 
-	if (n != 0){
-	//mass = 1e30 * rand(n,1)
+	
 	  int i;
 	  for(i = 0; i < n; i++){
 	    m[i] = (1*pow(10, 30))* rand()%2;
