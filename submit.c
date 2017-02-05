@@ -44,9 +44,8 @@ void readnbody(double** s, double** v, double* m, int n) {
 }
 
 void gennbody(double** s, double** v, double* m, int n) {
-<<<<<<< HEAD
-	printf("Generate nBody initial condition here.\n");
-=======
+  
+  printf("Generate nBody initial condition here.\n");
   //generate n bodies with random masses and positions, zero velocity
   
 	printf("Generate nBody initial condition here.\n");
@@ -71,7 +70,6 @@ void gennbody(double** s, double** v, double* m, int n) {
 	  v[j][2] = 0;
 	}
 	
->>>>>>> b2a8f81fff46595b752d6f0ec772676379e317f9
 }
 
 void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
