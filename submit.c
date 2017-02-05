@@ -5,6 +5,7 @@ Team Member 2 :
 */
 
 #include "nBody.h"
+#include <math.h>
 
 void readnbody(double** s, double** v, double* m, int n) {
 	int myrank;
@@ -76,8 +77,23 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	int myrank;
 	int nprocs;
 	int i;
+	double my_x, my_y, my_z;
+	const double G = pow(10,-11) * 6.674;
+	int week = 60 * 60 * 24 * 7;
+	timestep = 1 * week;
+	
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
+	//s, v, and m are the arrays we access, n is # of bodies
+	
+	for(int iIter = 0; iIter < iter; iIter++)
+	  {
+	    for(int pStep = 0; pStep < nprocs; pstep++)
+	      {
+		//compute force
+		//MPI ring
+	      }
+	  }
 	
 	// This is an example of printing the body parameters to the stderr. Your code should print out the final body parameters
 	// in the exact order as the input file. Since we are writing to the stderr in this case, rather than the stdout, make
