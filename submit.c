@@ -99,7 +99,9 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	int nprocs;
 	int i;
 	double my_x, my_y, my_z;
-	const double G = pow(10,-11) * 6.674;
+	double radius;
+	double force;
+     	const double G = pow(10,-11) * 6.674;
 	int week = 60 * 60 * 24 * 7;
 	timestep = 1 * week;
 	
@@ -109,9 +111,17 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	
 	for(int iIter = 0; iIter < iter; iIter++)
 	  {
-	    for(int pStep = 0; pStep < nprocs; pstep++)
+	    for(int i = 0; i < n; i++)
 	      {
-		//compute force
+		for(int j = 0; j < n; j++)
+		  {
+		    //compute force
+		    my_x = s[i][0] - s[j][0];
+		    my_y = s[i][1] - s[j][1];
+		    my_z = s[i][2] - s[j][2];
+		    radius = sqrt(pow(my_x, 2) + pow(my_y, 2) + pow(my_z, 2));
+		    if(radius != 0)
+		      force = (G*m[i]*m[j])/ radius;
 		//MPI ring
 	      }
 	  }
