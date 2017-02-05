@@ -44,7 +44,34 @@ void readnbody(double** s, double** v, double* m, int n) {
 }
 
 void gennbody(double** s, double** v, double* m, int n) {
+<<<<<<< HEAD
 	printf("Generate nBody initial condition here.\n");
+=======
+  //generate n bodies with random masses and positions, zero velocity
+  
+	printf("Generate nBody initial condition here.\n");
+	//implement gen solar system
+
+	//mass = 1e30 * rand(n,1)
+	int i;
+	for(i = 0; i < n; i++){
+	  m[i] = (1*pow(10, 30))* rand()%2;
+	}
+
+	int j;
+	for(j=0; j < n; j++){
+	  double theta = 2 * 3.14159 * rand()%2;
+	  double dist = (0.5*pow(10,13)) * rand()%2;
+
+	  s[j][0] = (dist*cos(theta));
+	  s[j][1] = (dist*sin(theta));
+	  s[j][2] = (1*pow(10,11))*(rand()%2 - 0.5);
+	  v[j][0] = 0;
+	  v[j][1] = 0;
+	  v[j][2] = 0;
+	}
+	
+>>>>>>> b2a8f81fff46595b752d6f0ec772676379e317f9
 }
 
 void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
