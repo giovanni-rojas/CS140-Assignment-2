@@ -141,6 +141,9 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 //	      }
 //	  }
 //	}
+//TODO: update position, velocity, and xyzfinal		
+		
+		
 	
 	// This is an example of printing the body parameters to the stderr. Your code should print out the final body parameters
 	// in the exact order as the input file. Since we are writing to the stderr in this case, rather than the stdout, make
