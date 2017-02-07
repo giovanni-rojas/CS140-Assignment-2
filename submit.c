@@ -125,6 +125,22 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 		//MPI ring
 	      }
 	  }
+		
+// randy's version unfinished: transcription of matlab code
+//	for(int i = 0; i < iter; i++){
+//	  for(int steps = 0; steps < timestep; steps++){
+//	    double *accel = {0,0,0};
+//	    for(int j = 0; j < n; j++){
+//	      for(int k = 0; k < n; k++){
+//		double *dist = {s[j][0] - s[k][0], s[j][1] - s[k][1], s[j][2] - s[k][2]};
+//		double norm = sqrt(pow(dist[0],2), pow(dist[1],2), pow(dist[2],2));
+//		//if norm = 0, end
+//		//if norm = infinity, end
+//		double forcescalar = (grav*m[j]*m[k])/(pow(norm,2)));
+//	        double *forcevec = {forcescalar*dist[0]/norm, forcescalar*dist[1]/norm, forcescalar*dist[2]/norm}; 
+//	      }
+//	  }
+//	}
 	
 	// This is an example of printing the body parameters to the stderr. Your code should print out the final body parameters
 	// in the exact order as the input file. Since we are writing to the stderr in this case, rather than the stdout, make
