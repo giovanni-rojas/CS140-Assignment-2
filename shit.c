@@ -78,22 +78,13 @@ void gennbody(double** s, double** v, double* m, int n) {
 	}
 }
 
-/*void zeroAccel(double (*a)[3], int size){
-	int i;
-	for(i = 0; i < size; ++i){
-			a[i][0] = 0;
-			a[i][1] = 0;
-			a[i][2] = 0;
-	}
-	}*/
-
 void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	double start, stop;
 	int i,j,k,z;
 	int pStep, dest, src;
 	double G = 6.674*pow(10, -11);
 	int week = 60 * 60 * 24 * 7;
-	int dt = 1 * week;
+	int dt = week;
 	double dx, dy, dz, fx, fy, fz, r, f;
 
 	start = MPI_Wtime();
@@ -101,9 +92,11 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	MPI_Comm_rank(MPI_COMM_WORLD, &myrank);
 	MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
 	int pSize = n / nprocs;
-
-	//MPI_Request *requests = (MPI_Request *) malloc(4 * sizeof(MPI_Request));
-
+	
+	double* m_copy = (double *) malloc(pSize * sizeof(double));
+	for(i = 0; i < pSize; i++)
+	  m_copy[i] = m[i];
+	
 	double (*s_disp)[3] = calloc(pSize, sizeof(*s_disp));
 	for (i = 0; i < pSize; ++i) {
 	  s_disp[i][0] = s[i][0];
@@ -111,32 +104,26 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	  s_disp[i][2] = s[i][2];
 	}
 	
-	double* m_copy = (double *) malloc(pSize * sizeof(double));
 
-	for(i = 0; i < pSize; ++i)
-	  m_copy[i] = m[i];
-	
 	double (*a)[3] = calloc(pSize, sizeof(*a));
-
-	for(i = 0; i < iter; ++i){
-	  for(pStep = 0; pStep < nprocs; ++pStep){
-
-	      for(j = 0; j < pSize; ++j){
-		for(k = 0; k < pSize; ++k){
+	for(i = 0; i < iter; i++){
+	  for(pStep = 0; pStep < nprocs; pStep++){
+	      for(j = 0; j < pSize; j++){
+		for(k = 0; k < pSize; k++){
 		  dx = s[j][0] - s_disp[k][0];
 		  dy = s[j][1] - s_disp[k][1];
 		  dz = s[j][2] - s_disp[k][2];
 		  
 		  r = sqrt(pow(dx,2) + pow(dy,2) + pow(dz, 2));
-		  if (r > 0.001 && isfinite(r)){
-		    f = (G * m[j] * m_copy[k]) / (pow(r,2));
-		    fx = f * dx / r;
-		    fy = f * dy / r;
-		    fz = f * dz / r;
+		  if (r >= 0.001 && isfinite(r)){
+		    f = (G*m[j]*m_copy[k])/(pow(r,2));
+		    fx = f*dx/r;
+		    fy = f*dy/r;
+		    fz = f*dz/r;
 
-		    a[j][0] = a[j][0] - fx / m[j];
-		    a[j][1] = a[j][1] - fy / m[j];
-		    a[j][2] = a[j][2] - fz / m[j];
+		    a[j][0] = a[j][0] - fx/m[j];
+		    a[j][1] = a[j][1] - fy/m[j];
+		    a[j][2] = a[j][2] - fz/m[j];
 
 		    if(!(isfinite(a[j][0]) && isfinite(a[j][1]) && isfinite(a[j][2]))){
 		      a[j][0] = 0;
@@ -148,7 +135,7 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 	      }
 			
 	      dest = (myrank+1) % nprocs;
-	      src = (myrank == 0) ? (nprocs-1) : (myrank - 1);
+	      src = (myrank == 0) ? (nprocs-1) : (myrank-1);
 		
 	  }
 	  for(z = 0; z < pSize; ++z){
@@ -169,15 +156,14 @@ void nbody(double** s, double** v, double* m, int n, int iter, int timestep) {
 
 	free(a);
 	free(s_disp);
-	free(m_copy);
-	
+	free(m_copy);	
 	stop = MPI_Wtime();
 
 	int print = 0;
 
 	if(myrank == 0){
 	  print = 1;
-	  		printf("Output time in seconds: %lf\n", stop-start);
+	  printf("Output time in seconds: %lf\n", stop-start);
 
 	}	else
 	  MPI_Recv(&print, 1, MPI_INT, myrank-1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
